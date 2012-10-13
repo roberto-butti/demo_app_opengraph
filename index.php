@@ -8,6 +8,7 @@ require 'slim/Slim/Slim.php';
 $app = new Slim\Slim();
 
 require_once("src/AppInfo.php");
+require_once("src/Utils.php");
 
 
 // LOADING FACEBOOK
@@ -26,8 +27,11 @@ $app->get('/hello/:name', function ( $name) use ($app)  {
     echo "Hello, $name";
 });
 $app->get('/', function ($name = "Demo app Open graph") use ($app, $facebook)  {
-  $user = $facebook->getUser();
-  $app->render('main.php', array('user' => $user));
+  $user_id = $facebook->getUser();
+  $app_info = $facebook->api('/'. AppInfo::appID());
+  $app_name = Utils::idx($app_info, 'name', '');
+  $app->render('main.php', array('user_id' => $user_id, 'title' => $app_name));
+  
 });
 $app->get('/info', function () {
     phpinfo();;

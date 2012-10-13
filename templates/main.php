@@ -15,7 +15,7 @@
   
   <!-- Included CSS Files (Uncompressed) -->
   <!--
-  <link rel="stylesheet" href="stylesheets/foundation.css">
+  <link rel="stylesheet" href="/assets/foundation/stylesheets/foundation.css">
   -->
   
   <!-- Included CSS Files (Compressed) -->
@@ -39,8 +39,11 @@
       <hr />
     </div>
     <div class="four columns">
-      <h2>Login area</h2>
-      <?php var_dump($user);?>
+      <?php if ($user_id): ?>
+        <h2>Login with Facebook:</h2>  
+      <?php else: ?>
+        <?php var_dump($user_id);?>
+      <?php endif; ?>
       <hr />
     </div>
   </div>
