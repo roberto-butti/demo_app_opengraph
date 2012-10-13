@@ -1,3 +1,8 @@
 [submodule "sdk"]
-	path = sdk
+	path = vendor/sdk
 	url = https://github.com/facebook/facebook-php-sdk.git
+[submodule "slim"]
+	path = vendor/slim
+	url = git://github.com/codeguy/Slim.git
+	
+
