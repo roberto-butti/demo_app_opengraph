@@ -21,8 +21,10 @@
   <!-- Included CSS Files (Compressed) -->
   <link rel="stylesheet" href="/assets/foundation/stylesheets/foundation.min.css">
   <link rel="stylesheet" href="/assets/foundation/stylesheets/app.css">
+  <link rel="stylesheet" href="/assets/stylesheets/base.css">
 
   <script src="/assets/foundation/javascripts/modernizr.foundation.js"></script>
+
 
   <!-- IE Fix for HTML5 Tags -->
   <!--[if lt IE 9]>
@@ -31,19 +33,112 @@
 
 </head>
 <body>
+  <div id="fb-root"></div>
+  <?php require("blocks/js.php");?>
+    <script type="text/javascript">
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId      : '<?php echo AppInfo::appID(); ?>', // App ID
+          channelUrl : '//<?php echo $_SERVER["HTTP_HOST"]; ?>/channel.html', // Channel File
+          status     : true, // check login status
+          cookie     : true, // enable cookies to allow the server to access the session
+          xfbml      : true // parse XFBML
+        });
 
+        
+
+        // Listen to the auth.login which will be called when the user logs in
+        // using the Login button
+        FB.Event.subscribe('auth.login', function(response) {
+          // We want to reload the page now so PHP can read the cookie that the
+          // Javascript SDK sat. But we don't want to use
+          // window.location.reload() because if this is in a canvas there was a
+          // post made to this page and a reload will trigger a message to the
+          // user asking if they want to send data again.
+          window.location = window.location;
+        });
+        FB.Event.subscribe('auth.statusChange', function(response) {
+          console.log("auth.statusChange");
+          var results = document.getElementById("auth-login");
+
+          if (response.authResponse) {
+            console.log("response");
+            // user has auth'd your app and is logged into Facebook
+            FB.api('/me', function(me){
+              var username= "";
+              var profile_image_url="";
+              if (me.name) {
+                username = me.name;
+                profile_image_url="http://graph.facebook.com/"+me.id+"/picture?type=square"
+              }
+              var dataObject= {};
+              var results = document.getElementById("auth-login");
+              dataObject.username= username;
+              dataObject.profile_image_url = profile_image_url;
+              results.innerHTML = tmpl("tmpl_menu_logged", dataObject);
+            })
+
+
+          } else {
+            // user has not auth'd your app, or is not logged into Facebook
+            results.innerHTML = tmpl("tmpl_menu_notlogged");
+
+          }
+        });
+        /*
+        document.getElementById('auth-loginlink').addEventListener('click', function(){
+          FB.login(function(response) {
+            if (response.authResponse) {
+              console.log('Welcome!  Fetching your information.... ');
+              FB.api('/me', function(response) {
+                console.log('Good to see you, ' + response.name + '.');
+              });
+            } else {
+              console.log('User cancelled login or did not fully authorize.');
+            }
+          } , {scope: 'email,user_likes,user_checkins'}
+          );
+        }); // END addEventListener click auth-loginlink
+        
+        document.getElementById('auth-logoutlink').addEventListener('click', function(){
+          FB.logout();
+        });
+        */
+        
+
+        FB.Canvas.setAutoGrow();
+      };
+
+      // Load the SDK Asynchronously
+      (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_US/all.js";
+        fjs.parentNode.insertBefore(js, fjs);
+      }(document, 'script', 'facebook-jssdk'));
+    </script>
+  
+
+  
+  <!-- Top Bar -->
+
+  <?php require("blocks/navbar.php");?>
+  
+<div class="container">
   <div class="row">
     <div class="eight columns">
-      <h2>Open Graph Demo App</h2>
+      <h2>
+        
+        <img class="logo" src="/assets/images/fb_apps_circle.png" />
+        Demo App Open Graph
+        </h2>
       <p>Demo Application with strong integration with Facebook</p>
       <hr />
     </div>
     <div class="four columns">
-      <?php if ($user_id): ?>
-        <h2>Login with Facebook:</h2>  
-      <?php else: ?>
-        <?php var_dump($user_id);?>
-      <?php endif; ?>
+      
+ 
       <hr />
     </div>
   </div>
@@ -168,7 +263,7 @@
     <a class="close-reveal-modal">?</a>
   </div>
   
-  
+</div>  
   <!-- Included JS Files (Uncompressed) -->
   <!--
   
@@ -206,5 +301,6 @@
   
   <!-- Initialize JS Plugins -->
   <script src="/assets/foundation/javascripts/app.js"></script>
+  <script src="/assets/javascript/base.js"></script>
 </body>
 </html>

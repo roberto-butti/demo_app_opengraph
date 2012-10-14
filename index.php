@@ -28,9 +28,10 @@ $app->get('/hello/:name', function ( $name) use ($app)  {
 });
 $app->get('/', function ($name = "Demo app Open graph") use ($app, $facebook)  {
   $user_id = $facebook->getUser();
-  $app_info = $facebook->api('/'. AppInfo::appID());
-  $app_name = Utils::idx($app_info, 'name', '');
-  $app->render('main.php', array('user_id' => $user_id, 'title' => $app_name));
+  //$app_info = $facebook->api('/'. AppInfo::appID());
+  //$app_name = Utils::idx($app_info, 'name', '');
+
+  $app->render('main.php', array('user_id' => $user_id, "title"=>"DEMO APP FB OG"));
   
 });
 $app->get('/info', function () {
