@@ -76,6 +76,7 @@
               dataObject.username= username;
               dataObject.profile_image_url = profile_image_url;
               results.innerHTML = tmpl("tmpl_menu_logged", dataObject);
+              load_feeds_user();
             })
 
 
@@ -137,7 +138,14 @@
       <hr />
     </div>
     <div class="four columns">
-      
+      <p id="user_feed"></p>
+<script type="text/html" id="tmpl_show_user_feeds">
+  <ul>
+  <% for ( var i = 0; i < data.length; i++ ) { %>
+    <li><a href="http://graph.facebook.com/<%=data[i].id%>"><%=data[i].story%></a></li>
+  <% } %>
+  </ul>
+</script>
  
       <hr />
     </div>
@@ -145,9 +153,9 @@
 
   <div class="row">
     <div class="eight columns">
+      <!--      GRID EXAMPLE
       <h3>The Grid</h3>
 
-      <!-- Grid Example -->
       <div class="row">
         <div class="twelve columns">
           <div class="panel">
@@ -184,6 +192,7 @@
           </div>
         </div>
       </div>
+    -->
       
       
       <h3>Tabs</h3>

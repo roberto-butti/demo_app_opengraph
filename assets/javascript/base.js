@@ -12,7 +12,7 @@ function click_login_facebook() {
     } else {
       console.log('User cancelled login or did not fully authorize.');
     }
-  } , {scope: 'email,user_likes,user_checkins'}
+  } , {scope: 'email,user_likes,user_checkins,user_status'}
   );
 }
 
@@ -20,5 +20,16 @@ function click_logout_facebook() {
   console.log("click_logout_facebook calling FB.logout();");
   FB.logout();
   console.log("click_logout_facebook done");
+}
+
+
+function load_feeds_user() {
+  var dataObject= {};
+  FB.api('/me/feed', function(response) {
+    console.log(response);
+    var results = document.getElementById("user_feed");
+    results.innerHTML = tmpl("tmpl_show_user_feeds", response);
+  });
+
 }
 
