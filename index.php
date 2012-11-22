@@ -34,6 +34,12 @@ $app->get('/', function ($name = "Demo app Open graph") use ($app, $facebook)  {
   $app->render('main.php', array('user_id' => $user_id, "title"=>"DEMO APP FB OG"));
   
 });
+
+$app->get("/maps/streetview", function() use ($app, $facebook)   {
+  $user_id = $facebook->getUser();
+  $app->render('map_streetview.php', array('user_id' => $user_id, "title"=>"Street View"));
+});
+
 $app->get('/info', function () {
     phpinfo();;
 });

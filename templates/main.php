@@ -1,37 +1,4 @@
-<!DOCTYPE html>
-
-<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
-<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
-<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
-<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
-<head>
-  <meta charset="utf-8" />
-
-  <!-- Set the viewport width to device width for mobile -->
-  <meta name="viewport" content="width=device-width" />
-
-  <title>Welcome to Demo open Graph</title>
-  
-  <!-- Included CSS Files (Uncompressed) -->
-  <!--
-  <link rel="stylesheet" href="/assets/foundation/stylesheets/foundation.css">
-  -->
-  
-  <!-- Included CSS Files (Compressed) -->
-  <link rel="stylesheet" href="/assets/foundation/stylesheets/foundation.min.css">
-  <link rel="stylesheet" href="/assets/foundation/stylesheets/app.css">
-  <link rel="stylesheet" href="/assets/stylesheets/base.css">
-
-  <script src="/assets/foundation/javascripts/modernizr.foundation.js"></script>
-
-
-  <!-- IE Fix for HTML5 Tags -->
-  <!--[if lt IE 9]>
-    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-  <![endif]-->
-
-</head>
+<?php include("blocks/html_header.php");?>
 <body>
   <div id="fb-root"></div>
   <?php require("blocks/js.php");?>
@@ -75,14 +42,22 @@
               var results = document.getElementById("auth-login");
               dataObject.username= username;
               dataObject.profile_image_url = profile_image_url;
-              results.innerHTML = tmpl("tmpl_menu_logged", dataObject);
+              //results.innerHTML = tmpl("tmpl_menu_logged", dataObject);
+              var source = $("#tmpl_menu_logged").html();
+              var template = Handlebars.compile(source);
+              results.innerHTML = template(dataObject);
               load_feeds_user();
             })
 
 
           } else {
             // user has not auth'd your app, or is not logged into Facebook
-            results.innerHTML = tmpl("tmpl_menu_notlogged");
+            var source = $("#tmpl_menu_notlogged").html();
+            console.log(source);
+            var template = Handlebars.compile(source);
+            console.log(template);
+            results.innerHTML = template();
+            //results.innerHTML = tmpl("tmpl_menu_notlogged");
 
           }
         });
